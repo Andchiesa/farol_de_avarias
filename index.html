@@ -47,7 +47,6 @@
             border: 1px solid #d1d5db;
             background-color: white;
             color: #374151;
-            /* Adicionado para centralizar o texto verticalmente */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -94,7 +93,6 @@
 </head>
 <body class="antialiased">
 
-    <!-- Header -->
     <header class="bg-white shadow-md sticky top-0 z-40">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-4">
@@ -111,19 +109,15 @@
 
     <main class="container mx-auto p-4 md:p-6">
 
-        <!-- Formulário de Lançamento View -->
         <div id="form-view">
             <form id="avaria-form" class="space-y-6">
-                 <!-- Seção de Identificação -->
                 <div class="form-section">
                     <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Identificação do Registro</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Data (Automática) -->
                         <div>
                             <label class="form-label">Data do Registro</label>
                             <input type="text" id="data" name="data" class="w-full bg-gray-100 p-3 rounded-lg border" readonly>
                         </div>
-                        <!-- Turno -->
                         <div>
                             <label class="form-label">Turno</label>
                             <div class="btn-group flex space-x-2" data-field="turno">
@@ -132,7 +126,6 @@
                                 <button type="button" class="flex-1 py-2 px-4 rounded-md" data-value="T3">T3</button>
                             </div>
                         </div>
-                        <!-- Líder Operacional -->
                         <div>
                             <label class="form-label">Líder Operacional</label>
                             <div class="btn-group flex space-x-2" data-field="lider">
@@ -146,11 +139,9 @@
                     </div>
                 </div>
 
-                <!-- Seção do Pacote -->
                 <div class="form-section">
                     <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Informações do Pacote</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Order ID -->
                         <div class="md:col-span-2">
                              <label for="order-id" class="form-label">Order ID (máx. 20 caracteres)</label>
                             <div class="flex">
@@ -160,12 +151,10 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- Operação (Fixo) -->
                         <div>
                             <label class="form-label">Operação</label>
                             <input type="text" value="LM Hub_RJ_São Cristovão" class="w-full bg-gray-100 p-3 rounded-lg border" readonly>
                         </div>
-                        <!-- Colaborador -->
                         <div>
                              <label for="colaborador" class="form-label">Colaborador</label>
                              <div class="btn-group flex space-x-2" data-field="colaborador">
@@ -177,11 +166,9 @@
                     </div>
                 </div>
                 
-                <!-- Detalhes da Avaria -->
                 <div class="form-section">
                     <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Classificação da Avaria</h2>
                     <div class="grid grid-cols-1 gap-y-6">
-                         <!-- Tipo de Avaria -->
                          <div>
                             <label class="form-label">Tipo de Avaria</label>
                             <div class="btn-group grid grid-cols-2 sm:grid-cols-4 gap-2" data-field="tipo-avaria">
@@ -195,7 +182,6 @@
                                 <button type="button" class="py-2 px-4 rounded-md" data-value="Incompleto">Incompleto</button>
                             </div>
                         </div>
-                        <!-- Local dos Desvios -->
                         <div>
                             <label class="form-label">Local dos Desvios</label>
                             <div class="btn-group grid grid-cols-2 sm:grid-cols-3 gap-2" data-field="local-desvios">
@@ -210,7 +196,6 @@
                                 <button type="button" class="py-2 px-2 rounded-md text-sm" data-value="Bancada de Expedição">Banc. Expedição</button>
                             </div>
                         </div>
-                         <!-- Ação -->
                         <div>
                              <label class="form-label">Ação</label>
                             <div class="btn-group grid grid-cols-2 sm:grid-cols-4 gap-2" data-field="acao">
@@ -220,7 +205,6 @@
                                 <button type="button" class="py-2 px-4 rounded-md" data-value="Salvados">Salvados</button>
                             </div>
                         </div>
-                        <!-- Análise Recebimento -->
                          <div>
                              <label class="form-label">Análise Recebimento</label>
                             <div class="btn-group grid grid-cols-2 sm:grid-cols-4 gap-2" data-field="analise-recebimento">
@@ -230,10 +214,8 @@
                                 <button type="button" class="py-2 px-4 rounded-md" data-value="Avaria de Fleet">Avaria de Fleet</button>
                             </div>
                         </div>
-                        <!-- Justificativa -->
                         <div>
                              <label class="form-label">Justificativa</label>
-                             <!-- CORREÇÃO: Botão "Encontrado 2° Sorting" adicionado e textos completos -->
                             <div class="btn-group grid grid-cols-2 sm:grid-cols-3 gap-2" data-field="justificativa">
                                 <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Encontrado na Gaiola de Expedição">Encontrado na Gaiola de Expedição</button>
                                 <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Retirado de Rota">Retirado de Rota</button>
@@ -242,7 +224,6 @@
                                 <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Encontrado 2° Sorting">Encontrado 2° Sorting</button>
                             </div>
                         </div>
-                        <!-- Status Atualizado -->
                         <div>
                             <label class="form-label">Status Atualizado</label>
                             <div class="btn-group flex space-x-2" data-field="status-atualizado">
@@ -253,7 +234,6 @@
                     </div>
                 </div>
 
-                <!-- Botões de Ação -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button type="submit" id="submit-btn" class="btn btn-primary text-lg">
                         <span id="submit-btn-text">Salvar Registro</span>
@@ -266,7 +246,6 @@
             </form>
         </div>
 
-        <!-- Consulta View -->
         <div id="query-view" class="hidden">
             <div class="form-section">
                  <h2 class="text-xl font-bold text-gray-800 border-b pb-4 mb-4">Consultar Order ID</h2>
@@ -291,7 +270,6 @@
         </div>
 
 
-        <!-- Dashboard View -->
         <div id="dashboard-view" class="hidden">
             <div class="form-section">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 mb-4">
@@ -314,7 +292,6 @@
         </div>
     </main>
 
-    <!-- Modal para leitor de QR Code -->
     <div id="qr-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
             <h3 class="text-lg font-bold mb-4">Aponte a câmera para o QR Code</h3>
@@ -323,7 +300,6 @@
         </div>
     </div>
     
-    <!-- Modal para atualização em lote -->
     <div id="batch-update-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
         <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
             <h3 class="text-lg font-bold mb-4">Atualizar Status em Lote</h3>
@@ -336,7 +312,6 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toast" class="hidden fixed bottom-5 right-5 bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg transition-opacity duration-300">
         <p id="toast-message"></p>
     </div>
@@ -345,19 +320,19 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // =========================================================================
-    // !! IMPORTANTE: CONFIGURAÇÃO DO GOOGLE APPS SCRIPT !!
+    // !! ÚNICO LOCAL PARA CONFIGURAR !!
     // Cole a URL da sua implantação do App da Web aqui.
     // =========================================================================
-    const SCRIPT_URL = 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbxOPP3cx0SMSiJs0RWrmPEqj1p0gNJvaR3whu3PAlq5PQOzbZeP29GwETFi29PTyY3Q/exec';
+    const SCRIPT_URL = 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI';
 
-    // Elementos do DOM
+    // --- O restante do código usa a constante SCRIPT_URL definida acima ---
+
     const form = document.getElementById('avaria-form');
     const orderIdInput = document.getElementById('order-id');
     const submitBtn = document.getElementById('submit-btn');
     const submitBtnText = document.getElementById('submit-btn-text');
     const submitBtnSpinner = document.getElementById('submit-btn-spinner');
     
-    // Elementos da navegação
     const formView = document.getElementById('form-view');
     const dashboardView = document.getElementById('dashboard-view');
     const queryView = document.getElementById('query-view');
@@ -365,7 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const showDashboardBtn = document.getElementById('show-dashboard-btn');
     const showQueryBtn = document.getElementById('show-query-btn');
 
-    // Elementos de Consulta
     const queryForm = document.getElementById('query-form');
     const queryOrderIdInput = document.getElementById('query-order-id');
     const querySubmitBtn = document.getElementById('query-submit-btn');
@@ -374,24 +348,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const queryResultsSection = document.getElementById('query-results-section');
     const queryResults = document.getElementById('query-results');
     
-    // Elementos do Modal QR
     const scanQrBtn = document.getElementById('scan-qr-btn');
     const scanQueryQrBtn = document.getElementById('scan-query-qr-btn');
     const qrModal = document.getElementById('qr-modal');
     const closeQrModalBtn = document.getElementById('close-qr-modal');
     
-    // Elementos do Modal Batch Update
     const batchUpdateModalBtn = document.getElementById('batch-update-modal-btn');
     const batchUpdateModal = document.getElementById('batch-update-modal');
     const closeBatchModalBtn = document.getElementById('close-batch-modal');
     const submitBatchUpdateBtn = document.getElementById('submit-batch-update');
 
-    // Variáveis de estado
     let formData = {};
     let html5QrcodeScanner;
-    let scannerContext = 'entry'; // 'entry' ou 'query'
+    let scannerContext = 'entry'; 
 
-    // Inicialização
     function init() {
         const dataField = document.getElementById('data');
         const today = new Date();
@@ -414,7 +384,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (e.target.tagName === 'BUTTON') {
                     const field = group.dataset.field;
                     const value = e.target.dataset.value;
-
                     if (e.target.id === 'outro-lider-btn') {
                         document.getElementById('outro-lider-input').classList.remove('hidden');
                     } else if (field === 'lider') {
@@ -437,7 +406,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupNavigation() {
         const navButtons = { form: showFormBtn, query: showQueryBtn, dashboard: showDashboardBtn };
         const views = { form: formView, query: queryView, dashboard: dashboardView };
-
         Object.keys(navButtons).forEach(key => {
             navButtons[key].addEventListener('click', () => {
                 Object.values(navButtons).forEach(btn => btn.classList.replace('btn-primary', 'btn-secondary'));
@@ -462,9 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupFormSubmission() {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            if(SCRIPT_URL === 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbxOPP3cx0SMSiJs0RWrmPEqj1p0gNJvaR3whu3PAlq5PQOzbZeP29GwETFi29PTyY3Q/exec') {
-                showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return;
-            }
+            if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') { showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return; }
             setLoading(true, submitBtn, submitBtnText, submitBtnSpinner);
             
             const finalData = { ...formData,
@@ -504,15 +470,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             html5QrcodeScanner.render(onScanSuccess, onScanFailure);
         };
-        
-        scanQrBtn.addEventListener('click', () => {
-            scannerContext = 'entry';
-            startScanner();
-        });
-        scanQueryQrBtn.addEventListener('click', () => {
-            scannerContext = 'query';
-            startScanner();
-        });
+        scanQrBtn.addEventListener('click', () => { scannerContext = 'entry'; startScanner(); });
+        scanQueryQrBtn.addEventListener('click', () => { scannerContext = 'query'; startScanner(); });
         closeQrModalBtn.addEventListener('click', stopQrScanner);
     }
     
@@ -523,9 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => qrModal.classList.remove('shake-error'), 500);
             return;
         }
-        
         stopQrScanner();
-        
         if (scannerContext === 'entry') {
             orderIdInput.value = decodedText;
             showToast('Código lido com sucesso!', 'success');
@@ -548,15 +505,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupBatchUpdate() {
         batchUpdateModalBtn.addEventListener('click', () => batchUpdateModal.classList.remove('hidden'));
         closeBatchModalBtn.addEventListener('click', () => batchUpdateModal.classList.add('hidden'));
-        
         submitBatchUpdateBtn.addEventListener('click', () => {
-            if(SCRIPT_URL === 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbxOPP3cx0SMSiJs0RWrmPEqj1p0gNJvaR3whu3PAlq5PQOzbZeP29GwETFi29PTyY3Q/exec') {
-                showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return;
-            }
+            if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') { showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return; }
             const orderIds = document.getElementById('batch-order-ids').value.split('\n').map(id => id.trim()).filter(id => id);
-            if (orderIds.length === 0) {
-                showToast('Por favor, insira ao menos um Order ID.', 'error'); return;
-            }
+            if (orderIds.length === 0) { showToast('Por favor, insira ao menos um Order ID.', 'error'); return; }
             const batchData = { action: 'batchUpdate', orderIds: orderIds, status: 'Sim' };
             showToast('Atualizando em lote...', 'info');
             batchUpdateModal.classList.add('hidden');
@@ -577,7 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const orderId = queryOrderIdInput.value.trim();
             if (!orderId) { showToast('Por favor, digite um Order ID.', 'error'); return; }
-            if(SCRIPT_URL === 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbxOPP3cx0SMSiJs0RWrmPEqj1p0gNJvaR3whu3PAlq5PQOzbZeP29GwETFi29PTyY3Q/exec') { showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return; }
+            if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') { showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return; }
             
             setLoading(true, querySubmitBtn, queryBtnText, queryBtnSpinner);
             queryResultsSection.classList.remove('hidden');
