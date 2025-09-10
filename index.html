@@ -264,10 +264,13 @@
             <div class="form-section">
                  <h2 class="text-xl font-bold text-gray-800 border-b pb-4 mb-4">Consultar Order ID</h2>
                  <form id="query-form">
-                     <label for="query-order-id" class="form-label">Digite o Order ID para buscar</label>
-                     <div class="flex flex-col sm:flex-row gap-2">
-                        <input type="text" id="query-order-id" class="w-full p-3 rounded-lg border flex-grow" placeholder="Digite o código do pacote...">
-                        <button type="submit" id="query-submit-btn" class="btn btn-primary">
+                     <label for="query-order-id" class="form-label">Order ID</label>
+                     <div class="flex">
+                        <input type="text" id="query-order-id" class="w-full p-3 rounded-l-lg border-t border-b border-l" placeholder="Digite ou escaneie o código...">
+                        <button type="button" id="scan-query-qr-btn" class="bg-gray-700 hover:bg-gray-800 text-white p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6.586 4.414l.707.707M4 12H2m15.586-6.414l-.707-.707M6 18l.707.707M12 20v1m-6.414-2.414l-.707.707M18 6l-.707-.707M21 12h-1M4 12a8 8 0 018-8m0 16a8 8 0 01-8-8" /></svg>
+                        </button>
+                        <button type="submit" id="query-submit-btn" class="btn btn-primary rounded-l-none">
                             <span id="query-btn-text">Buscar</span>
                             <span id="query-btn-spinner" class="hidden">Buscando...</span>
                         </button>
@@ -366,6 +369,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Elementos do Modal QR
     const scanQrBtn = document.getElementById('scan-qr-btn');
+    const scanQueryQrBtn = document.getElementById('scan-query-qr-btn');
     const qrModal = document.getElementById('qr-modal');
     const closeQrModalBtn = document.getElementById('close-qr-modal');
     
@@ -375,9 +379,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBatchModalBtn = document.getElementById('close-batch-modal');
     const submitBatchUpdateBtn = document.getElementById('submit-batch-update');
 
-    // Armazenamento de dados do formulário
+    // Variáveis de estado
     let formData = {};
     let html5QrcodeScanner;
+    let scannerContext = 'entry'; // 'entry' ou 'query'
 
     // Inicialização
     function init() {
@@ -397,8 +402,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupButtonGroups() {
-        const buttonGroups = document.querySelectorAll('.btn-group');
-        buttonGroups.forEach(group => {
+        document.querySelectorAll('.btn-group').forEach(group => {
             group.addEventListener('click', (e) => {
                 if (e.target.tagName === 'BUTTON') {
                     const field = group.dataset.field;
@@ -418,31 +422,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function setupLiderOutro() {
-        const outroLiderInput = document.getElementById('outro-lider-input');
-        outroLiderInput.addEventListener('input', (e) => {
+        document.getElementById('outro-lider-input').addEventListener('input', (e) => {
             formData['lider'] = e.target.value.trim();
         });
     }
 
     function setupNavigation() {
-        const navButtons = {
-            form: showFormBtn,
-            query: showQueryBtn,
-            dashboard: showDashboardBtn
-        };
-        const views = {
-            form: formView,
-            query: queryView,
-            dashboard: dashboardView
-        };
+        const navButtons = { form: showFormBtn, query: showQueryBtn, dashboard: showDashboardBtn };
+        const views = { form: formView, query: queryView, dashboard: dashboardView };
 
         Object.keys(navButtons).forEach(key => {
             navButtons[key].addEventListener('click', () => {
-                // Atualiza o estado dos botões
                 Object.values(navButtons).forEach(btn => btn.classList.replace('btn-primary', 'btn-secondary'));
                 navButtons[key].classList.replace('btn-secondary', 'btn-primary');
-                
-                // Mostra a view correta
                 Object.values(views).forEach(view => view.classList.add('hidden'));
                 views[key].classList.remove('hidden');
             });
@@ -464,32 +456,27 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') {
-                showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error');
-                return;
+                showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return;
             }
-
             setLoading(true, submitBtn, submitBtnText, submitBtnSpinner);
             
-            const finalData = { ...formData };
-            finalData.data = document.getElementById('data').value;
-            finalData.orderId = orderIdInput.value.trim();
-            finalData.operacao = 'LM Hub_RJ_São Cristovão';
-            finalData.action = 'insert';
+            const finalData = { ...formData,
+                data: document.getElementById('data').value,
+                orderId: orderIdInput.value.trim(),
+                operacao: 'LM Hub_RJ_São Cristovão',
+                action: 'insert'
+            };
             
             const requiredFields = ['turno', 'lider', 'colaborador', 'orderId', 'tipo-avaria', 'status-atualizado', 'local-desvios', 'acao', 'analise-recebimento', 'justificativa'];
             const missingField = requiredFields.find(field => !finalData[field] || finalData[field] === '');
+
             if (missingField) {
                 showToast(`Erro: O campo "${missingField}" é obrigatório.`, 'error');
                 setLoading(false, submitBtn, submitBtnText, submitBtnSpinner);
                 return;
             }
             
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(finalData)
-            })
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(finalData) })
             .then(() => {
                 showToast('Registro salvo com sucesso!', 'success');
                 resetForm();
@@ -498,19 +485,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Erro ao enviar dados:', error);
                 showToast('Ocorreu um erro ao salvar.', 'error');
             })
-            .finally(() => {
-                setLoading(false, submitBtn, submitBtnText, submitBtnSpinner);
-            });
+            .finally(() => setLoading(false, submitBtn, submitBtnText, submitBtnSpinner));
         });
     }
     
     function setupQrScanner() {
-        scanQrBtn.addEventListener('click', () => {
+        const startScanner = () => {
             qrModal.classList.remove('hidden');
             if (!html5QrcodeScanner) {
-                html5QrcodeScanner = new Html5QrcodeScanner( "qr-reader", { fps: 10, qrbox: { width: 250, height: 250 } }, false );
+                html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: { width: 250, height: 250 } }, false);
             }
             html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        };
+        
+        scanQrBtn.addEventListener('click', () => {
+            scannerContext = 'entry';
+            startScanner();
+        });
+        scanQueryQrBtn.addEventListener('click', () => {
+            scannerContext = 'query';
+            startScanner();
         });
         closeQrModalBtn.addEventListener('click', stopQrScanner);
     }
@@ -518,12 +512,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function onScanSuccess(decodedText, decodedResult) {
         if (decodedText.length > 20) {
             showToast('Código inválido! Máximo de 20 caracteres.', 'error');
-            document.body.classList.add('shake-error');
-            setTimeout(() => document.body.classList.remove('shake-error'), 500);
-        } else {
+            qrModal.classList.add('shake-error');
+            setTimeout(() => qrModal.classList.remove('shake-error'), 500);
+            return;
+        }
+        
+        stopQrScanner();
+        
+        if (scannerContext === 'entry') {
             orderIdInput.value = decodedText;
             showToast('Código lido com sucesso!', 'success');
-            stopQrScanner();
+        } else if (scannerContext === 'query') {
+            queryOrderIdInput.value = decodedText;
+            showToast('Código lido. Buscando...', 'info');
+            querySubmitBtn.click();
         }
     }
 
@@ -531,15 +533,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function stopQrScanner() {
         if (html5QrcodeScanner && html5QrcodeScanner.getState() === 2) { 
-             html5QrcodeScanner.stop().then(() => {
-                qrModal.classList.add('hidden');
-            }).catch(err => {
-                console.error("Failed to stop scanner", err);
-                qrModal.classList.add('hidden');
-            });
-        } else {
-             qrModal.classList.add('hidden');
+            html5QrcodeScanner.stop().catch(err => console.error("Falha ao parar o scanner.", err));
         }
+        qrModal.classList.add('hidden');
     }
 
     function setupBatchUpdate() {
@@ -547,25 +543,17 @@ document.addEventListener('DOMContentLoaded', () => {
         closeBatchModalBtn.addEventListener('click', () => batchUpdateModal.classList.add('hidden'));
         
         submitBatchUpdateBtn.addEventListener('click', () => {
-             if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') {
-                showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error');
-                return;
+            if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') {
+                showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return;
             }
-            const orderIdsText = document.getElementById('batch-order-ids').value;
-            const orderIds = orderIdsText.split('\n').map(id => id.trim()).filter(id => id);
+            const orderIds = document.getElementById('batch-order-ids').value.split('\n').map(id => id.trim()).filter(id => id);
             if (orderIds.length === 0) {
-                showToast('Por favor, insira ao menos um Order ID.', 'error');
-                return;
+                showToast('Por favor, insira ao menos um Order ID.', 'error'); return;
             }
             const batchData = { action: 'batchUpdate', orderIds: orderIds, status: 'Sim' };
             showToast('Atualizando em lote...', 'info');
             batchUpdateModal.classList.add('hidden');
-             fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(batchData)
-            })
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(batchData) })
             .then(() => {
                 showToast(`${orderIds.length} registros atualizados!`, 'success');
                 document.getElementById('batch-order-ids').value = '';
@@ -581,48 +569,32 @@ document.addEventListener('DOMContentLoaded', () => {
         queryForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const orderId = queryOrderIdInput.value.trim();
-            if (!orderId) {
-                showToast('Por favor, digite um Order ID.', 'error');
-                return;
-            }
-             if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') {
-                showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error');
-                return;
-            }
+            if (!orderId) { showToast('Por favor, digite um Order ID.', 'error'); return; }
+            if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') { showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return; }
             
             setLoading(true, querySubmitBtn, queryBtnText, queryBtnSpinner);
             queryResultsSection.classList.remove('hidden');
             queryResults.innerHTML = '<p class="text-gray-500">Buscando informações...</p>';
             
-            const queryUrl = `${SCRIPT_URL}?action=query&orderId=${encodeURIComponent(orderId)}`;
-
-            fetch(queryUrl)
+            fetch(`${SCRIPT_URL}?action=query&orderId=${encodeURIComponent(orderId)}`)
                 .then(response => response.json())
                 .then(result => {
-                    queryResults.innerHTML = '';
                     if (result.status === 'success') {
-                        const data = result.data;
-                        const detailsHtml = Object.entries(data).map(([key, value]) => `
+                        const detailsHtml = Object.entries(result.data).map(([key, value]) => `
                             <div class="py-2 border-b last:border-b-0">
                                 <strong class="text-gray-600 capitalize">${key.replace(/_/g, ' ')}:</strong>
                                 <span class="text-gray-800 ml-2">${value}</span>
-                            </div>
-                        `).join('');
+                            </div>`).join('');
                         queryResults.innerHTML = detailsHtml;
                     } else if (result.status === 'not_found') {
                         queryResults.innerHTML = '<p class="text-red-600 font-semibold">Não foi realizado o cadastro deste BR.</p>';
-                    } else {
-                        throw new Error(result.message || 'Erro desconhecido na busca.');
-                    }
+                    } else { throw new Error(result.message || 'Erro desconhecido na busca.'); }
                 })
                 .catch(error => {
                     console.error('Erro na consulta:', error);
                     queryResults.innerHTML = '<p class="text-red-600 font-semibold">Ocorreu um erro ao buscar os dados. Tente novamente.</p>';
-                    showToast('Erro ao buscar dados.', 'error');
                 })
-                .finally(() => {
-                     setLoading(false, querySubmitBtn, queryBtnText, queryBtnSpinner);
-                });
+                .finally(() => setLoading(false, querySubmitBtn, queryBtnText, queryBtnSpinner));
         });
     }
 
@@ -641,9 +613,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else toast.classList.add('bg-gray-800');
         toastMessage.textContent = message;
         toast.classList.remove('hidden');
-        setTimeout(() => {
-            toast.classList.add('hidden');
-        }, 3000);
+        setTimeout(() => { toast.classList.add('hidden'); }, 3000);
     }
     
     function resetForm() {
@@ -677,4 +647,3 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
