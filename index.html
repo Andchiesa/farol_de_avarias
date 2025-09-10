@@ -348,7 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // !! IMPORTANTE: CONFIGURAÇÃO DO GOOGLE APPS SCRIPT !!
     // Cole a URL da sua implantação do App da Web aqui.
     // =========================================================================
-    const SCRIPT_URL = 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI';
+    const SCRIPT_URL = 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbxOPP3cx0SMSiJs0RWrmPEqj1p0gNJvaR3whu3PAlq5PQOzbZeP29GwETFi29PTyY3Q/exec';
 
     // Elementos do DOM
     const form = document.getElementById('avaria-form');
@@ -462,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupFormSubmission() {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') {
+            if(SCRIPT_URL === 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbxOPP3cx0SMSiJs0RWrmPEqj1p0gNJvaR3whu3PAlq5PQOzbZeP29GwETFi29PTyY3Q/exec') {
                 showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return;
             }
             setLoading(true, submitBtn, submitBtnText, submitBtnSpinner);
@@ -550,7 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
         closeBatchModalBtn.addEventListener('click', () => batchUpdateModal.classList.add('hidden'));
         
         submitBatchUpdateBtn.addEventListener('click', () => {
-            if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') {
+            if(SCRIPT_URL === 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbxOPP3cx0SMSiJs0RWrmPEqj1p0gNJvaR3whu3PAlq5PQOzbZeP29GwETFi29PTyY3Q/exec') {
                 showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return;
             }
             const orderIds = document.getElementById('batch-order-ids').value.split('\n').map(id => id.trim()).filter(id => id);
@@ -577,7 +577,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const orderId = queryOrderIdInput.value.trim();
             if (!orderId) { showToast('Por favor, digite um Order ID.', 'error'); return; }
-            if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') { showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return; }
+            if(SCRIPT_URL === 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbxOPP3cx0SMSiJs0RWrmPEqj1p0gNJvaR3whu3PAlq5PQOzbZeP29GwETFi29PTyY3Q/exec') { showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return; }
             
             setLoading(true, querySubmitBtn, queryBtnText, queryBtnSpinner);
             queryResultsSection.classList.remove('hidden');
@@ -654,5 +654,3 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
-
