@@ -47,6 +47,11 @@
             border: 1px solid #d1d5db;
             background-color: white;
             color: #374151;
+            /* Adicionado para centralizar o texto verticalmente */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
         }
         .btn-group button.active {
             background-color: #ee4d2d;
@@ -228,11 +233,13 @@
                         <!-- Justificativa -->
                         <div>
                              <label class="form-label">Justificativa</label>
-                            <div class="btn-group grid grid-cols-2 sm:grid-cols-4 gap-2" data-field="justificativa">
-                                <button type="button" class="py-2 px-4 rounded-md text-sm" data-value="Encontrado na Gaiola de Expedição">Gaiola Expedição</button>
-                                <button type="button" class="py-2 px-4 rounded-md text-sm" data-value="Retirado de Rota">Retirado de Rota</button>
-                                <button type="button" class="py-2 px-4 rounded-md text-sm" data-value="Encontrado na Expedição de Volumoso">Exp. Volumoso</button>
-                                <button type="button" class="py-2 px-4 rounded-md text-sm" data-value="Encontrado no 1° Sorting">Encontrado 1° Sorting</button>
+                             <!-- CORREÇÃO: Botão "Encontrado 2° Sorting" adicionado e textos completos -->
+                            <div class="btn-group grid grid-cols-2 sm:grid-cols-3 gap-2" data-field="justificativa">
+                                <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Encontrado na Gaiola de Expedição">Encontrado na Gaiola de Expedição</button>
+                                <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Retirado de Rota">Retirado de Rota</button>
+                                <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Encontrado na Expedição de Volumoso">Encontrado na Expedição de Volumoso</button>
+                                <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Encontrado no 1° Sorting">Encontrado no 1° Sorting</button>
+                                <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Encontrado 2° Sorting">Encontrado 2° Sorting</button>
                             </div>
                         </div>
                         <!-- Status Atualizado -->
@@ -647,3 +654,5 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
+
