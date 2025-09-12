@@ -295,7 +295,6 @@
     <div id="qr-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
         <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
             <h3 class="text-lg font-bold mb-2">Aponte a câmera para o código</h3>
-            <!-- MENSAGEM DE AJUDA ADICIONADA -->
             <p class="text-sm text-gray-600 mb-4">O seu navegador irá pedir permissão para usar a câmera. Por favor, clique em "Permitir" para escanear.</p>
             <div id="qr-reader" class="w-full"></div>
             <button id="close-qr-modal" class="btn btn-secondary w-full mt-4">Cancelar</button>
@@ -321,13 +320,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-    // =========================================================================
-    // !! ÚNICO LOCAL PARA CONFIGURAR !!
-    // Cole a URL da sua implantação do App da Web aqui.
-    // =========================================================================
     const SCRIPT_URL = 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbyl7eFWfuw27xkLZIytX4GnaRlLjC5i5dLPwrfs28kvi2I2hEQX7UtYrhM7VjFZh0HH/exec';
-
-    // --- O restante do código usa a constante SCRIPT_URL definida acima ---
 
     function checkUrlConfig() {
         if (SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI' || !SCRIPT_URL) {
@@ -342,14 +335,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submit-btn');
     const submitBtnText = document.getElementById('submit-btn-text');
     const submitBtnSpinner = document.getElementById('submit-btn-spinner');
-    
     const formView = document.getElementById('form-view');
     const dashboardView = document.getElementById('dashboard-view');
     const queryView = document.getElementById('query-view');
     const showFormBtn = document.getElementById('show-form-btn');
     const showDashboardBtn = document.getElementById('show-dashboard-btn');
     const showQueryBtn = document.getElementById('show-query-btn');
-
     const queryForm = document.getElementById('query-form');
     const queryOrderIdInput = document.getElementById('query-order-id');
     const querySubmitBtn = document.getElementById('query-submit-btn');
@@ -357,17 +348,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const queryBtnSpinner = document.getElementById('query-btn-spinner');
     const queryResultsSection = document.getElementById('query-results-section');
     const queryResults = document.getElementById('query-results');
-    
     const scanQrBtn = document.getElementById('scan-qr-btn');
     const scanQueryQrBtn = document.getElementById('scan-query-qr-btn');
     const qrModal = document.getElementById('qr-modal');
     const closeQrModalBtn = document.getElementById('close-qr-modal');
-    
     const batchUpdateModalBtn = document.getElementById('batch-update-modal-btn');
     const batchUpdateModal = document.getElementById('batch-update-modal');
     const closeBatchModalBtn = document.getElementById('close-batch-modal');
     const submitBatchUpdateBtn = document.getElementById('submit-batch-update');
-
     let formData = {};
     let html5QrcodeScanner;
     let scannerContext = 'entry'; 
@@ -456,14 +444,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(finalData) })
-            .then(() => {
-                showToast('Registro salvo com sucesso!', 'success');
+            // MUDANÇA DE DEPURAÇÃO: Removido 'mode: no-cors'
+            fetch(SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(finalData) })
+            .then(response => {
+                // Mesmo que não consigamos ler a resposta, um 'then' sem erro já é um bom sinal
+                showToast('Registro enviado com sucesso!', 'success');
                 resetForm();
             })
             .catch(error => {
-                console.error('Erro ao enviar dados:', error);
-                showToast('Ocorreu um erro ao salvar.', 'error');
+                console.error('Erro detalhado ao enviar dados:', error);
+                showToast('Ocorreu um erro ao salvar. Verifique o console para detalhes.', 'error');
             })
             .finally(() => setLoading(false, submitBtn, submitBtnText, submitBtnSpinner));
         });
@@ -519,14 +509,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const batchData = { action: 'batchUpdate', orderIds: orderIds, status: 'Sim' };
             showToast('Atualizando em lote...', 'info');
             batchUpdateModal.classList.add('hidden');
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(batchData) })
-            .then(() => {
+            // MUDANÇA DE DEPURAÇÃO: Removido 'mode: no-cors'
+            fetch(SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(batchData) })
+            .then(response => {
                 showToast(`${orderIds.length} registros atualizados!`, 'success');
                 document.getElementById('batch-order-ids').value = '';
             })
             .catch(error => {
-                console.error('Erro no batch update:', error);
-                showToast('Erro ao atualizar em lote.', 'error');
+                console.error('Erro detalhado no batch update:', error);
+                showToast('Erro ao atualizar em lote. Verifique o console.', 'error');
             });
         });
     }
