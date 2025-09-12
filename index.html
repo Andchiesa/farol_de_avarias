@@ -292,9 +292,11 @@
         </div>
     </main>
 
-    <div id="qr-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+    <div id="qr-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
         <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
-            <h3 class="text-lg font-bold mb-4">Aponte a câmera para o QR Code</h3>
+            <h3 class="text-lg font-bold mb-2">Aponte a câmera para o código</h3>
+            <!-- MENSAGEM DE AJUDA ADICIONADA -->
+            <p class="text-sm text-gray-600 mb-4">O seu navegador irá pedir permissão para usar a câmera. Por favor, clique em "Permitir" para escanear.</p>
             <div id="qr-reader" class="w-full"></div>
             <button id="close-qr-modal" class="btn btn-secondary w-full mt-4">Cancelar</button>
         </div>
@@ -323,9 +325,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // !! ÚNICO LOCAL PARA CONFIGURAR !!
     // Cole a URL da sua implantação do App da Web aqui.
     // =========================================================================
-    const SCRIPT_URL = 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbx8Z7d36miy_dwq9qcEF-Yyl-zegLC7oVeilhb5aPVahRrREZsB6lzoXdbTn2Qx9Tz4/exec';
+    const SCRIPT_URL = 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbwH4b-okEYWWvnawtezb1SgQIktNzTS5TXgLXuzwujfbycbJpNRD25Hav8yRSKYRA2X/exec';
 
     // --- O restante do código usa a constante SCRIPT_URL definida acima ---
+
+    function checkUrlConfig() {
+        if (SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI' || !SCRIPT_URL) {
+            showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error');
+            return false;
+        }
+        return true;
+    }
 
     const form = document.getElementById('avaria-form');
     const orderIdInput = document.getElementById('order-id');
@@ -363,10 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let scannerContext = 'entry'; 
 
     function init() {
-        const dataField = document.getElementById('data');
-        const today = new Date();
-        dataField.value = today.toLocaleDateString('pt-BR');
-
+        document.getElementById('data').value = new Date().toLocaleDateString('pt-BR');
         setupButtonGroups();
         setupNavigation();
         setupFormSubmission();
@@ -430,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupFormSubmission() {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') { showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return; }
+            if (!checkUrlConfig()) return;
             setLoading(true, submitBtn, submitBtnText, submitBtnSpinner);
             
             const finalData = { ...formData,
@@ -506,7 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
         batchUpdateModalBtn.addEventListener('click', () => batchUpdateModal.classList.remove('hidden'));
         closeBatchModalBtn.addEventListener('click', () => batchUpdateModal.classList.add('hidden'));
         submitBatchUpdateBtn.addEventListener('click', () => {
-            if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') { showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return; }
+            if (!checkUrlConfig()) return;
             const orderIds = document.getElementById('batch-order-ids').value.split('\n').map(id => id.trim()).filter(id => id);
             if (orderIds.length === 0) { showToast('Por favor, insira ao menos um Order ID.', 'error'); return; }
             const batchData = { action: 'batchUpdate', orderIds: orderIds, status: 'Sim' };
@@ -527,9 +534,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupQuery() {
         queryForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            if (!checkUrlConfig()) return;
             const orderId = queryOrderIdInput.value.trim();
             if (!orderId) { showToast('Por favor, digite um Order ID.', 'error'); return; }
-            if(SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI') { showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error'); return; }
             
             setLoading(true, querySubmitBtn, queryBtnText, queryBtnSpinner);
             queryResultsSection.classList.remove('hidden');
@@ -606,3 +613,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
