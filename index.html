@@ -11,98 +11,134 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
+        :root {
+            --shopee-orange: #ee4d2d;
+            --shopee-orange-dark: #d73a19;
+            --background-color: #f7f8fa;
+            --card-background: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
         }
-        .shopee-orange { color: #ee4d2d; }
-        .bg-shopee-orange { background-color: #ee4d2d; }
-        .border-shopee-orange { border-color: #ee4d2d; }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            text-align: center;
-            width: 100%;
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--background-color); 
+            color: var(--text-primary);
         }
-        .btn-primary {
-            background-color: #ee4d2d;
-            color: white;
+        .btn { 
+            padding: 0.75rem 1.5rem; 
+            border-radius: 0.5rem; 
+            font-weight: 600; 
+            transition: all 0.2s ease-in-out; 
+            cursor: pointer; 
+            text-align: center; 
+            width: 100%; 
+            border: 1px solid transparent;
         }
-        .btn-primary:hover {
-            background-color: #d73a19;
+        .btn-primary { 
+            background-color: var(--shopee-orange); 
+            color: white; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         }
-        .btn-secondary {
-            background-color: #f0f2f5;
-            color: #4a5568;
-            border: 1px solid #e2e8f0;
+        .btn-primary:hover { 
+            background-color: var(--shopee-orange-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
         }
-        .btn-secondary:hover {
-            background-color: #e2e8f0;
+        .btn-secondary { 
+            background-color: var(--card-background); 
+            color: var(--text-secondary); 
+            border-color: var(--border-color);
         }
-        .btn-group button {
-            transition: all 0.2s;
-            border: 1px solid #d1d5db;
-            background-color: white;
-            color: #374151;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 40px;
+        .btn-secondary:hover { 
+            background-color: #f9fafb; 
+            border-color: #d1d5db;
         }
-        .btn-group button.active {
-            background-color: #ee4d2d;
-            color: white;
-            border-color: #ee4d2d;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .btn-nav.active {
+             background-color: var(--shopee-orange);
+             color: white;
         }
-        .form-section {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        .btn-nav:not(.active) {
+            background-color: #e5e7eb;
+            color: var(--text-secondary);
+        }
+        .btn-nav:not(.active):hover {
+            background-color: #d1d5db;
+        }
+        .btn-group button { 
+            transition: all 0.2s; 
+            border: 1px solid var(--border-color); 
+            background-color: white; 
+            color: var(--text-primary); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 40px; 
+            font-size: 0.875rem;
+        }
+        .btn-group button.active { 
+            background-color: var(--shopee-orange); 
+            color: white; 
+            border-color: var(--shopee-orange); 
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3);
+        }
+        .form-section { 
+            background-color: var(--card-background); 
+            padding: 1.5rem 2rem; 
+            border-radius: 0.75rem; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); 
+            margin-bottom: 1.5rem; 
+            border: 1px solid var(--border-color);
+        }
+        .form-label { 
+            display: block; 
+            font-weight: 500; 
+            margin-bottom: 0.75rem; 
+            color: var(--text-secondary); 
+            font-size: 0.875rem;
+        }
+        .form-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
             margin-bottom: 1.5rem;
         }
-        .form-label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: #1f2937;
-            font-size: 0.9rem;
+        input[type="text"] {
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
-        .shake-error {
-            animation: shake 0.5s;
+        input[type="text"]:focus {
+            border-color: var(--shopee-orange);
+            box-shadow: 0 0 0 2px rgba(238, 77, 45, 0.2);
+            outline: none;
         }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        .shake-error { animation: shake 0.5s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); } 20%, 40%, 60%, 80% { transform: translateX(8px); } }
+        #qr-reader { border: none; border-radius: 0.5rem; }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        .modal-content {
+            animation: fadeIn 0.3s ease-out;
         }
-        #qr-reader {
-            border: none;
-            border-radius: 0.5rem;
-        }
-        .chart-container {
-            position: relative;
-            height: 300px;
-            width: 100%;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <header class="bg-white shadow-md sticky top-0 z-40">
+    <header class="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-200">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-4">
-                <img src="https://i.imgur.com/165ZBoo.png" alt="[Logo da Shopee]" class="h-10">
-                <h1 class="text-xl md:text-2xl font-bold text-gray-800 hidden sm:block">Controle de Avarias</h1>
+                <img src="https://i.imgur.com/165ZBoo.png" alt="[Imagem do logo da Shopee]" class="h-10">
+                <h1 class="text-xl md:text-2xl font-bold text-gray-800 hidden sm:block">Painel de Avarias</h1>
             </div>
-            <div id="nav-buttons" class="flex space-x-2">
-                <button id="show-form-btn" class="btn btn-primary text-sm py-2 px-4">Lançamento</button>
-                <button id="show-query-btn" class="btn btn-secondary text-sm py-2 px-4">Consulta</button>
-                <button id="show-dashboard-btn" class="btn btn-secondary text-sm py-2 px-4">Dashboard</button>
+            <div id="nav-buttons" class="flex space-x-1 bg-gray-200 p-1 rounded-lg">
+                <button id="show-form-btn" class="btn btn-nav active text-sm py-1.5 px-4">Lançamento</button>
+                <button id="show-query-btn" class="btn btn-nav text-sm py-1.5 px-4">Consulta</button>
+                <button id="show-dashboard-btn" class="btn btn-nav text-sm py-1.5 px-4">Dashboard</button>
             </div>
         </div>
     </header>
@@ -112,224 +148,51 @@
         <div id="form-view">
             <form id="avaria-form" class="space-y-6">
                 <div class="form-section">
-                    <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Identificação do Registro</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div>
-                            <label class="form-label">Data do Registro</label>
-                            <input type="text" id="data" name="data" class="w-full bg-gray-100 p-3 rounded-lg border" readonly>
-                        </div>
-                        <div>
-                            <label class="form-label">Turno</label>
-                            <div class="btn-group flex space-x-2" data-field="turno">
-                                <button type="button" class="flex-1 py-2 px-4 rounded-md" data-value="T1">T1</button>
-                                <button type="button" class="flex-1 py-2 px-4 rounded-md" data-value="T2">T2</button>
-                                <button type="button" class="flex-1 py-2 px-4 rounded-md" data-value="T3">T3</button>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="form-label">Líder Operacional</label>
-                            <div class="btn-group flex space-x-2" data-field="lider">
-                                <button type="button" class="flex-1 py-2 px-2 rounded-md text-sm" data-value="Dione">Dione</button>
-                                <button type="button" class="flex-1 py-2 px-2 rounded-md text-sm" data-value="Leonardo">Leonardo</button>
-                                <button type="button" class="flex-1 py-2 px-2 rounded-md text-sm" data-value="Lorran">Lorran</button>
-                                <button type="button" id="outro-lider-btn" class="flex-1 py-2 px-2 rounded-md text-sm" data-value="Outro">Outro</button>
-                            </div>
-                             <input type="text" id="outro-lider-input" name="outro-lider" placeholder="Digite o nome do líder" class="hidden w-full mt-2 p-2 rounded-lg border">
-                        </div>
+                    <h2 class="form-title">Identificação do Registro</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6">
+                        <div><label class="form-label">Data</label><input type="text" id="data" class="w-full bg-gray-100 p-3 rounded-lg border" readonly></div>
+                        <div><label class="form-label">Turno</label><div class="btn-group grid grid-cols-3 gap-2" data-field="turno"><button type="button" class="py-2 px-4 rounded-md" data-value="T1">T1</button><button type="button" class="py-2 px-4 rounded-md" data-value="T2">T2</button><button type="button" class="py-2 px-4 rounded-md" data-value="T3">T3</button></div></div>
+                        <div><label class="form-label">Líder Operacional</label><div class="btn-group grid grid-cols-4 gap-2" data-field="lider"><button type="button" class="p-2 text-sm rounded-md" data-value="Dione">Dione</button><button type="button" class="p-2 text-sm rounded-md" data-value="Leonardo">Leonardo</button><button type="button" class="p-2 text-sm rounded-md" data-value="Lorran">Lorran</button><button type="button" id="outro-lider-btn" class="p-2 text-sm rounded-md" data-value="Outro">Outro</button></div><input type="text" id="outro-lider-input" placeholder="Digite o nome" class="hidden w-full mt-2 p-2 rounded-lg border"></div>
                     </div>
                 </div>
-
                 <div class="form-section">
-                    <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Informações do Pacote</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="md:col-span-2">
-                             <label for="order-id" class="form-label">Order ID (máx. 20 caracteres)</label>
-                            <div class="flex">
-                                <input type="text" id="order-id" name="order-id" maxlength="20" class="w-full p-3 rounded-l-lg border-t border-b border-l" placeholder="Use o leitor ou digite o código">
-                                <button type="button" id="scan-qr-btn" class="bg-gray-700 hover:bg-gray-800 text-white p-3 rounded-r-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6.586 4.414l.707.707M4 12H2m15.586-6.414l-.707-.707M6 18l.707.707M12 20v1m-6.414-2.414l-.707.707M18 6l-.707-.707M21 12h-1M4 12a8 8 0 018-8m0 16a8 8 0 01-8-8" /></svg>
-                                </button>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="form-label">Operação</label>
-                            <input type="text" value="LM Hub_RJ_São Cristovão" class="w-full bg-gray-100 p-3 rounded-lg border" readonly>
-                        </div>
-                        <div>
-                             <label for="colaborador" class="form-label">Colaborador</label>
-                             <div class="btn-group flex space-x-2" data-field="colaborador">
-                                <button type="button" class="flex-1 py-2 px-4 rounded-md" data-value="Anderson">Anderson</button>
-                                <button type="button" class="flex-1 py-2 px-4 rounded-md" data-value="Igor">Igor</button>
-                                <button type="button" class="flex-1 py-2 px-4 rounded-md" data-value="Júlia">Júlia</button>
-                            </div>
-                        </div>
+                     <h2 class="form-title">Informações do Pacote</h2>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        <div class="md:col-span-2"><label for="order-id" class="form-label">Order ID</label><div class="flex"><input type="text" id="order-id" maxlength="20" class="w-full p-3 rounded-l-lg border" placeholder="Use o leitor ou digite"><button type="button" id="scan-qr-btn" class="bg-gray-700 hover:bg-gray-900 text-white p-3 rounded-r-lg transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6.586 4.414l.707.707M4 12H2m15.586-6.414l-.707-.707M6 18l.707.707M12 20v1m-6.414-2.414l-.707.707M18 6l-.707-.707M21 12h-1M4 12a8 8 0 018-8m0 16a8 8 0 01-8-8" /></svg></button></div></div>
+                        <div><label class="form-label">Operação</label><input type="text" value="LM Hub_RJ_São Cristovão" class="w-full bg-gray-100 p-3 rounded-lg border" readonly></div>
+                        <div><label class="form-label">Colaborador</label><div class="btn-group grid grid-cols-3 gap-2" data-field="colaborador"><button type="button" class="py-2 px-4 rounded-md" data-value="Anderson">Anderson</button><button type="button" class="py-2 px-4 rounded-md" data-value="Igor">Igor</button><button type="button" class="py-2 px-4 rounded-md" data-value="Júlia">Júlia</button></div></div>
                     </div>
                 </div>
-                
                 <div class="form-section">
-                    <h2 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Classificação da Avaria</h2>
-                    <div class="grid grid-cols-1 gap-y-6">
-                         <div>
-                            <label class="form-label">Tipo de Avaria</label>
-                            <div class="btn-group grid grid-cols-2 sm:grid-cols-4 gap-2" data-field="tipo-avaria">
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Líquido">Líquido</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Vidro">Vidro</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Embalagem">Embalagem</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Lost">Lost</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Extravio">Extravio</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Alimentos">Alimentos</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Sólido">Sólido</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Incompleto">Incompleto</button>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="form-label">Local dos Desvios</label>
-                            <div class="btn-group grid grid-cols-2 sm:grid-cols-3 gap-2" data-field="local-desvios">
-                                <button type="button" class="py-2 px-2 rounded-md text-sm" data-value="1° Sorting">1° Sorting</button>
-                                <button type="button" class="py-2 px-2 rounded-md text-sm" data-value="2° Sorting">2° Sorting</button>
-                                <button type="button" class="py-2 px-2 rounded-md text-sm" data-value="Recebimento">Recebimento</button>
-                                <button type="button" class="py-2 px-2 rounded-md text-sm" data-value="Avaria do Line Haul">Avaria do Line Haul</button>
-                                <button type="button" class="py-2 px-2 rounded-md text-sm" data-value="Área de Tratativas">Área de Tratativas</button>
-                                <button type="button" class="py-2 px-2 rounded-md text-sm" data-value="Bancada de Processamento">Banc. Processamento</button>
-                                <button type="button" class="py-2 px-2 rounded-md text-sm" data-value="Esteira">Esteira</button>
-                                <button type="button" class="py-2 px-2 rounded-md text-sm" data-value="Avaria do XPT">Avaria do XPT</button>
-                                <button type="button" class="py-2 px-2 rounded-md text-sm" data-value="Bancada de Expedição">Banc. Expedição</button>
-                            </div>
-                        </div>
-                        <div>
-                             <label class="form-label">Ação</label>
-                            <div class="btn-group grid grid-cols-2 sm:grid-cols-4 gap-2" data-field="acao">
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Descarte Bambona">Descarte Bambona</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Recuperado">Recuperado</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Descarte Fora Bombona">Descarte Fora</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Salvados">Salvados</button>
-                            </div>
-                        </div>
-                         <div>
-                             <label class="form-label">Análise Recebimento</label>
-                            <div class="btn-group grid grid-cols-2 sm:grid-cols-4 gap-2" data-field="analise-recebimento">
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Enviado pelo SOC">Enviado pelo SOC</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Recebido pelo HUB">Recebido pelo HUB</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Enviado pelo XPT">Enviado pelo XPT</button>
-                                <button type="button" class="py-2 px-4 rounded-md" data-value="Avaria de Fleet">Avaria de Fleet</button>
-                            </div>
-                        </div>
-                        <div>
-                             <label class="form-label">Justificativa</label>
-                            <div class="btn-group grid grid-cols-2 sm:grid-cols-3 gap-2" data-field="justificativa">
-                                <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Encontrado na Gaiola de Expedição">Encontrado na Gaiola de Expedição</button>
-                                <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Retirado de Rota">Retirado de Rota</button>
-                                <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Encontrado na Expedição de Volumoso">Encontrado na Expedição de Volumoso</button>
-                                <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Encontrado no 1° Sorting">Encontrado no 1° Sorting</button>
-                                <button type="button" class="p-2 rounded-md text-xs leading-tight" data-value="Encontrado 2° Sorting">Encontrado 2° Sorting</button>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="form-label">Status Atualizado</label>
-                            <div class="btn-group flex space-x-2" data-field="status-atualizado">
-                                <button type="button" class="flex-1 py-2 px-4 rounded-md" data-value="Sim">Sim</button>
-                                <button type="button" class="flex-1 py-2 px-4 rounded-md" data-value="Não">Não</button>
-                            </div>
-                        </div>
+                    <h2 class="form-title">Classificação da Avaria</h2>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        <div><label class="form-label">Tipo de Avaria</label><div class="btn-group grid grid-cols-2 sm:grid-cols-4 gap-2" data-field="tipo-avaria"><button type="button" class="py-2 px-2 rounded-md" data-value="Líquido">Líquido</button><button type="button" class="py-2 px-2 rounded-md" data-value="Vidro">Vidro</button><button type="button" class="py-2 px-2 rounded-md" data-value="Embalagem">Embalagem</button><button type="button" class="py-2 px-2 rounded-md" data-value="Lost">Lost</button><button type="button" class="py-2 px-2 rounded-md" data-value="Extravio">Extravio</button><button type="button" class="py-2 px-2 rounded-md" data-value="Alimentos">Alimentos</button><button type="button" class="py-2 px-2 rounded-md" data-value="Sólido">Sólido</button><button type="button" class="py-2 px-2 rounded-md" data-value="Incompleto">Incompleto</button></div></div>
+                        <!-- LAYOUT CORRIGIDO -->
+                        <div><label class="form-label">Local dos Desvios</label><div class="btn-group grid grid-cols-2 sm:grid-cols-3 gap-2" data-field="local-desvios"><button type="button" class="p-2 text-xs rounded-md" data-value="1° Sorting">1° Sorting</button><button type="button" class="p-2 text-xs rounded-md" data-value="2° Sorting">2° Sorting</button><button type="button" class="p-2 text-xs rounded-md" data-value="Recebimento">Recebimento</button><button type="button" class="p-2 text-xs rounded-md" data-value="Avaria do Line Haul">Avaria do Line Haul</button><button type="button" class="p-2 text-xs rounded-md" data-value="Área de Tratativas">Área de Tratativas</button><button type="button" class="p-2 text-xs rounded-md" data-value="Bancada de Processamento">Banc. Processamento</button><button type="button" class="p-2 text-xs rounded-md" data-value="Esteira">Esteira</button><button type="button" class="p-2 text-xs rounded-md" data-value="Avaria do XPT">Avaria do XPT</button><button type="button" class="p-2 text-xs rounded-md" data-value="Bancada de Expedição">Banc. Expedição</button></div></div>
+                        <div><label class="form-label">Ação</label><div class="btn-group grid grid-cols-2 sm:grid-cols-4 gap-2" data-field="acao"><button type="button" class="p-2 text-xs rounded-md" data-value="Descarte Bambona">Descarte Bambona</button><button type="button" class="p-2 text-xs rounded-md" data-value="Recuperado">Recuperado</button><button type="button" class="p-2 text-xs rounded-md" data-value="Descarte Fora Bombona">Descarte Fora Bombona</button><button type="button" class="p-2 text-xs rounded-md" data-value="Salvados">Salvados</button></div></div>
+                        <div><label class="form-label">Análise Recebimento</label><div class="btn-group grid grid-cols-2 sm:grid-cols-4 gap-2" data-field="analise-recebimento"><button type="button" class="p-2 text-xs rounded-md" data-value="Enviado pelo SOC">Enviado pelo SOC</button><button type="button" class="p-2 text-xs rounded-md" data-value="Recebido pelo HUB">Recebido pelo HUB</button><button type="button" class="p-2 text-xs rounded-md" data-value="Enviado pelo XPT">Enviado pelo XPT</button><button type="button" class="p-2 text-xs rounded-md" data-value="Avaria de Fleet">Avaria de Fleet</button></div></div>
+                        <!-- TEXTO E LAYOUT CORRIGIDOS -->
+                        <div class="md:col-span-2"><label class="form-label">Justificativa</label><div class="btn-group grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2" data-field="justificativa"><button type="button" class="p-2 text-xs rounded-md" data-value="Gaiola de Expedição">Gaiola de Expedição</button><button type="button" class="p-2 text-xs rounded-md" data-value="Retirado de Rota">Retirado de Rota</button><button type="button" class="p-2 text-xs rounded-md" data-value="Expedição de Volumoso">Expedição de Volumoso</button><button type="button" class="p-2 text-xs rounded-md" data-value="1° Sorting">1° Sorting</button><button type="button" class="p-2 text-xs rounded-md" data-value="2° Sorting">2° Sorting</button></div></div>
+                        <div><label class="form-label">Status Atualizado</label><div class="btn-group grid grid-cols-2 gap-2" data-field="status-atualizado"><button type="button" class="py-2 px-4 rounded-md" data-value="Sim">Sim</button><button type="button" class="py-2 px-4 rounded-md" data-value="Não">Não</button></div></div>
                     </div>
                 </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button type="submit" id="submit-btn" class="btn btn-primary text-lg">
-                        <span id="submit-btn-text">Salvar Registro</span>
-                        <span id="submit-btn-spinner" class="hidden">Salvando...</span>
-                    </button>
-                    <button type="button" id="batch-update-modal-btn" class="btn btn-secondary">
-                        Atualizar Status em Lote
-                    </button>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                    <button type="submit" id="submit-btn" class="btn btn-primary text-lg"><span id="submit-btn-text">Salvar Registro</span><span id="submit-btn-spinner" class="hidden">A Guardar...</span></button>
+                    <button type="button" id="batch-update-modal-btn" class="btn btn-secondary">Atualizar Status em Lote</button>
                 </div>
             </form>
         </div>
 
-        <div id="query-view" class="hidden">
-            <div class="form-section">
-                 <h2 class="text-xl font-bold text-gray-800 border-b pb-4 mb-4">Consultar Order ID</h2>
-                 <form id="query-form">
-                     <label for="query-order-id" class="form-label">Order ID</label>
-                     <div class="flex">
-                        <input type="text" id="query-order-id" class="w-full p-3 rounded-l-lg border-t border-b border-l" placeholder="Digite ou escaneie o código...">
-                        <button type="button" id="scan-query-qr-btn" class="bg-gray-700 hover:bg-gray-800 text-white p-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6.586 4.414l.707.707M4 12H2m15.586-6.414l-.707-.707M6 18l.707.707M12 20v1m-6.414-2.414l-.707.707M18 6l-.707-.707M21 12h-1M4 12a8 8 0 018-8m0 16a8 8 0 01-8-8" /></svg>
-                        </button>
-                        <button type="submit" id="query-submit-btn" class="btn btn-primary rounded-l-none">
-                            <span id="query-btn-text">Buscar</span>
-                            <span id="query-btn-spinner" class="hidden">Buscando...</span>
-                        </button>
-                     </div>
-                 </form>
-            </div>
-            <div id="query-results-section" class="form-section hidden mt-6">
-                 <h3 class="text-lg font-bold text-gray-800 border-b pb-2 mb-4">Detalhes do Registro</h3>
-                 <div id="query-results"></div>
-            </div>
-        </div>
-
-
-        <div id="dashboard-view" class="hidden">
-            <div class="form-section">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 mb-4">
-                    <h2 class="text-xl font-bold text-gray-800">Dashboard de Análise</h2>
-                    <div class="flex space-x-2 mt-2 sm:mt-0">
-                        <button class="btn btn-secondary text-sm py-1 px-3 active">Diário</button>
-                        <button class="btn btn-secondary text-sm py-1 px-3">Semanal</button>
-                        <button class="btn btn-secondary text-sm py-1 px-3">Mensal</button>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartTipoAvaria"></canvas></div>
-                    <div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartLocalDesvios"></canvas></div>
-                    <div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartAcao"></canvas></div>
-                    <div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartTurno"></canvas></div>
-                    <div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartAnaliseRecebimento"></canvas></div>
-                    <div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartJustificativa"></canvas></div>
-                </div>
-            </div>
-        </div>
+        <div id="query-view" class="hidden"><div class="form-section"><h2 class="form-title">Consultar Order ID</h2><form id="query-form"><label for="query-order-id" class="form-label">Order ID</label><div class="flex"><input type="text" id="query-order-id" class="w-full p-3 rounded-l-lg border" placeholder="Digite ou escaneie o código..."><button type="button" id="scan-query-qr-btn" class="bg-gray-700 hover:bg-gray-900 text-white p-3 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6.586 4.414l.707.707M4 12H2m15.586-6.414l-.707-.707M6 18l.707.707M12 20v1m-6.414-2.414l-.707.707M18 6l-.707-.707M21 12h-1M4 12a8 8 0 018-8m0 16a8 8 0 01-8-8" /></svg></button><button type="submit" id="query-submit-btn" class="btn btn-primary rounded-l-none"><span id="query-btn-text">Procurar</span><span id="query-btn-spinner" class="hidden">A Procurar...</span></button></div></form></div><div id="query-results-section" class="form-section hidden mt-6"><h3 class="form-title">Detalhes do Registo</h3><div id="query-results"></div></div></div>
+        <div id="dashboard-view" class="hidden"><div class="form-section"><div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 mb-4"><h2 class="form-title">Dashboard de Análise</h2><div class="flex space-x-2 mt-2 sm:mt-0"><button class="btn btn-secondary text-sm py-1 px-3 active">Diário</button><button class="btn btn-secondary text-sm py-1 px-3">Semanal</button><button class="btn btn-secondary text-sm py-1 px-3">Mensal</button></div></div><div class="grid grid-cols-1 lg:grid-cols-2 gap-6"><div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartTipoAvaria"></canvas></div><div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartLocalDesvios"></canvas></div><div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartAcao"></canvas></div><div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartTurno"></canvas></div><div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartAnaliseRecebimento"></canvas></div><div class="bg-gray-50 p-4 rounded-lg chart-container"><canvas id="chartJustificativa"></canvas></div></div></div></div>
     </main>
 
-    <div id="qr-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
-            <h3 class="text-lg font-bold mb-2">Aponte a câmera para o código</h3>
-            <p class="text-sm text-gray-600 mb-4">O seu navegador irá pedir permissão para usar a câmera. Por favor, clique em "Permitir" para escanear.</p>
-            <div id="qr-reader" class="w-full"></div>
-            <button id="close-qr-modal" class="btn btn-secondary w-full mt-4">Cancelar</button>
-        </div>
-    </div>
-    
-    <div id="batch-update-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-        <div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full">
-            <h3 class="text-lg font-bold mb-4">Atualizar Status em Lote</h3>
-            <p class="text-sm text-gray-600 mb-4">Cole uma lista de Order IDs (um por linha) para atualizar o status para "Sim".</p>
-            <textarea id="batch-order-ids" rows="8" class="w-full p-2 border rounded-lg" placeholder="Order_ID_1&#10;Order_ID_2&#10;Order_ID_3"></textarea>
-            <div class="flex justify-end space-x-4 mt-4">
-                <button id="close-batch-modal" class="btn btn-secondary">Cancelar</button>
-                <button id="submit-batch-update" class="btn btn-primary">Atualizar Status para "Sim"</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="toast" class="hidden fixed bottom-5 right-5 bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg transition-opacity duration-300">
-        <p id="toast-message"></p>
-    </div>
+    <div id="qr-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4"><div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full modal-content"><h3 class="text-lg font-bold mb-2">Aponte a câmara para o código</h3><p class="text-sm text-gray-600 mb-4">O seu navegador irá pedir permissão para usar a câmara. Por favor, clique em "Permitir" para escanear.</p><div id="qr-reader" class="w-full"></div><button id="close-qr-modal" class="btn btn-secondary w-full mt-4">Cancelar</button></div></div>
+    <div id="batch-update-modal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4"><div class="bg-white p-6 rounded-lg shadow-xl max-w-md w-full modal-content"><h3 class="text-lg font-bold mb-4">Atualizar Status em Lote</h3><p class="text-sm text-gray-600 mb-4">Cole uma lista de Order IDs (um por linha) para atualizar o status para "Sim".</p><textarea id="batch-order-ids" rows="8" class="w-full p-2 border rounded-lg focus:border-shopee-orange focus:ring-2 focus:ring-shopee-orange/20"></textarea><div class="flex justify-end space-x-4 mt-4"><button id="close-batch-modal" class="btn btn-secondary">Cancelar</button><button id="submit-batch-update" class="btn btn-primary">Atualizar Status</button></div></div></div>
+    <div id="toast" class="hidden fixed bottom-5 right-5 bg-gray-800 text-white py-3 px-5 rounded-lg shadow-lg transition-all duration-300 transform translate-y-12 opacity-0"><p id="toast-message"></p></div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-
-    const SCRIPT_URL = 'https://script.google.com/a/macros/shopeemobile-external.com/s/AKfycbyl7eFWfuw27xkLZIytX4GnaRlLjC5i5dLPwrfs28kvi2I2hEQX7UtYrhM7VjFZh0HH/exec';
-
-    function checkUrlConfig() {
-        if (SCRIPT_URL === 'COLE_A_URL_DO_SEU_APP_DA_WEB_AQUI' || !SCRIPT_URL) {
-            showToast('ERRO: Configure a URL do Google Apps Script primeiro!', 'error');
-            return false;
-        }
-        return true;
-    }
-
     const form = document.getElementById('avaria-form');
     const orderIdInput = document.getElementById('order-id');
     const submitBtn = document.getElementById('submit-btn');
@@ -376,16 +239,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupButtonGroups() {
         document.querySelectorAll('.btn-group').forEach(group => {
             group.addEventListener('click', (e) => {
-                if (e.target.tagName === 'BUTTON') {
+                const button = e.target.closest('button');
+                if (button) {
                     const field = group.dataset.field;
-                    const value = e.target.dataset.value;
-                    if (e.target.id === 'outro-lider-btn') {
+                    const value = button.dataset.value;
+                    if (button.id === 'outro-lider-btn') {
                         document.getElementById('outro-lider-input').classList.remove('hidden');
                     } else if (field === 'lider') {
                          document.getElementById('outro-lider-input').classList.add('hidden');
                     }
-                    Array.from(group.children).forEach(btn => btn.classList.remove('active'));
-                    e.target.classList.add('active');
+                    Array.from(group.querySelectorAll('button')).forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
                     formData[field] = value;
                 }
             });
@@ -403,8 +267,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const views = { form: formView, query: queryView, dashboard: dashboardView };
         Object.keys(navButtons).forEach(key => {
             navButtons[key].addEventListener('click', () => {
-                Object.values(navButtons).forEach(btn => btn.classList.replace('btn-primary', 'btn-secondary'));
-                navButtons[key].classList.replace('btn-secondary', 'btn-primary');
+                Object.values(navButtons).forEach(btn => btn.classList.remove('active'));
+                navButtons[key].classList.add('active');
                 Object.values(views).forEach(view => view.classList.add('hidden'));
                 views[key].classList.remove('hidden');
             });
@@ -425,37 +289,29 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupFormSubmission() {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            if (!checkUrlConfig()) return;
             setLoading(true, submitBtn, submitBtnText, submitBtnSpinner);
-            
-            const finalData = { ...formData,
-                data: document.getElementById('data').value,
-                orderId: orderIdInput.value.trim(),
-                operacao: 'LM Hub_RJ_São Cristovão',
-                action: 'insert'
-            };
-            
+            const finalData = { ...formData, data: document.getElementById('data').value, orderId: orderIdInput.value.trim() };
             const requiredFields = ['turno', 'lider', 'colaborador', 'orderId', 'tipo-avaria', 'status-atualizado', 'local-desvios', 'acao', 'analise-recebimento', 'justificativa'];
             const missingField = requiredFields.find(field => !finalData[field] || finalData[field] === '');
 
             if (missingField) {
-                showToast(`Erro: O campo "${missingField}" é obrigatório.`, 'error');
+                showToast(`Erro: O campo "${missingField.replace(/-/g, ' ')}" é obrigatório.`, 'error');
                 setLoading(false, submitBtn, submitBtnText, submitBtnSpinner);
                 return;
             }
             
-            // CORREÇÃO FINAL: 'mode: no-cors' REINSERIDO
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(finalData) })
-            .then(() => {
-                showToast('Registro enviado com sucesso!', 'success');
-                resetForm();
-            })
-            .catch(error => {
-                console.error('Ocorreu um erro, mas ele pode ser ignorado no modo no-cors:', error);
-                showToast('Registro enviado com sucesso!', 'success');
-                resetForm();
-            })
-            .finally(() => setLoading(false, submitBtn, submitBtnText, submitBtnSpinner));
+            google.script.run
+                .withSuccessHandler(message => {
+                    showToast(message, 'success');
+                    resetForm();
+                })
+                .withFailureHandler(error => {
+                    showToast(error.message, 'error');
+                })
+                .withFinally(() => {
+                    setLoading(false, submitBtn, submitBtnText, submitBtnSpinner);
+                })
+                .inserirRegistro(finalData);
         });
     }
     
@@ -475,8 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function onScanSuccess(decodedText, decodedResult) {
         if (decodedText.length > 20) {
             showToast('Código inválido! Máximo de 20 caracteres.', 'error');
-            qrModal.classList.add('shake-error');
-            setTimeout(() => qrModal.classList.remove('shake-error'), 500);
+            qrModal.querySelector('.modal-content').classList.add('shake-error');
+            setTimeout(() => qrModal.querySelector('.modal-content').classList.remove('shake-error'), 500);
             return;
         }
         stopQrScanner();
@@ -485,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast('Código lido com sucesso!', 'success');
         } else if (scannerContext === 'query') {
             queryOrderIdInput.value = decodedText;
-            showToast('Código lido. Buscando...', 'info');
+            showToast('Código lido. A procurar...', 'info');
             querySubmitBtn.click();
         }
     }
@@ -503,56 +359,53 @@ document.addEventListener('DOMContentLoaded', () => {
         batchUpdateModalBtn.addEventListener('click', () => batchUpdateModal.classList.remove('hidden'));
         closeBatchModalBtn.addEventListener('click', () => batchUpdateModal.classList.add('hidden'));
         submitBatchUpdateBtn.addEventListener('click', () => {
-            if (!checkUrlConfig()) return;
             const orderIds = document.getElementById('batch-order-ids').value.split('\n').map(id => id.trim()).filter(id => id);
-            if (orderIds.length === 0) { showToast('Por favor, insira ao menos um Order ID.', 'error'); return; }
-            const batchData = { action: 'batchUpdate', orderIds: orderIds, status: 'Sim' };
-            showToast('Atualizando em lote...', 'info');
+            if (orderIds.length === 0) { showToast('Por favor, insira pelo menos um Order ID.', 'error'); return; }
+            showToast('A atualizar em lote...', 'info');
             batchUpdateModal.classList.add('hidden');
-            // CORREÇÃO FINAL: 'mode: no-cors' REINSERIDO
-            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(batchData) })
-            .then(() => {
-                showToast(`${orderIds.length} registros atualizados!`, 'success');
-                document.getElementById('batch-order-ids').value = '';
-            })
-            .catch(error => {
-                console.error('Ocorreu um erro, mas ele pode ser ignorado no modo no-cors:', error);
-                showToast(`${orderIds.length} registros atualizados!`, 'success');
-                document.getElementById('batch-order-ids').value = '';
-            });
+
+            google.script.run
+                .withSuccessHandler(message => {
+                    showToast(message, 'success');
+                    document.getElementById('batch-order-ids').value = '';
+                })
+                .withFailureHandler(error => {
+                    showToast(error.message, 'error');
+                })
+                .atualizarEmLote(orderIds);
         });
     }
 
     function setupQuery() {
         queryForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            if (!checkUrlConfig()) return;
             const orderId = queryOrderIdInput.value.trim();
             if (!orderId) { showToast('Por favor, digite um Order ID.', 'error'); return; }
             
             setLoading(true, querySubmitBtn, queryBtnText, queryBtnSpinner);
             queryResultsSection.classList.remove('hidden');
-            queryResults.innerHTML = '<p class="text-gray-500">Buscando informações...</p>';
+            queryResults.innerHTML = '<p class="text-gray-500">A procurar informações...</p>';
             
-            fetch(`${SCRIPT_URL}?action=query&orderId=${encodeURIComponent(orderId)}`)
-                .then(response => response.json())
-                .then(result => {
+            google.script.run
+                .withSuccessHandler(result => {
                     if (result.status === 'success') {
                         const detailsHtml = Object.entries(result.data).map(([key, value]) => `
-                            <div class="py-2 border-b last:border-b-0">
-                                <strong class="text-gray-600 capitalize">${key.replace(/_/g, ' ')}:</strong>
-                                <span class="text-gray-800 ml-2">${value}</span>
+                            <div class="py-3 border-b border-gray-100 last:border-b-0 flex justify-between items-center">
+                                <strong class="text-gray-500 font-medium capitalize">${key.replace(/_/g, ' ')}:</strong>
+                                <span class="text-gray-800 font-semibold ml-2 text-right">${value}</span>
                             </div>`).join('');
                         queryResults.innerHTML = detailsHtml;
                     } else if (result.status === 'not_found') {
-                        queryResults.innerHTML = '<p class="text-red-600 font-semibold">Não foi realizado o cadastro deste BR.</p>';
-                    } else { throw new Error(result.message || 'Erro desconhecido na busca.'); }
+                        queryResults.innerHTML = '<p class="text-red-600 font-semibold text-center py-4">Não foi realizado o registo deste BR.</p>';
+                    }
                 })
-                .catch(error => {
-                    console.error('Erro na consulta:', error);
-                    queryResults.innerHTML = '<p class="text-red-600 font-semibold">Ocorreu um erro ao buscar os dados. Tente novamente.</p>';
+                .withFailureHandler(error => {
+                     queryResults.innerHTML = `<p class="text-red-600 font-semibold text-center py-4">Ocorreu um erro: ${error.message}</p>`;
                 })
-                .finally(() => setLoading(false, querySubmitBtn, queryBtnText, queryBtnSpinner));
+                .withFinally(() => {
+                    setLoading(false, querySubmitBtn, queryBtnText, queryBtnSpinner);
+                })
+                .consultarOrderId(orderId);
         });
     }
 
@@ -565,13 +418,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function showToast(message, type = 'info') {
         const toast = document.getElementById('toast');
         const toastMessage = document.getElementById('toast-message');
-        toast.classList.remove('bg-gray-800', 'bg-green-600', 'bg-red-600');
+        toast.classList.remove('bg-gray-800', 'bg-green-600', 'bg-red-600', 'translate-y-12', 'opacity-0');
         if (type === 'success') toast.classList.add('bg-green-600');
         else if (type === 'error') toast.classList.add('bg-red-600');
         else toast.classList.add('bg-gray-800');
         toastMessage.textContent = message;
         toast.classList.remove('hidden');
-        setTimeout(() => { toast.classList.add('hidden'); }, 3000);
+        setTimeout(() => {
+             toast.classList.remove('translate-y-0', 'opacity-100');
+             toast.classList.add('translate-y-12', 'opacity-0');
+        }, 3000);
     }
     
     function resetForm() {
@@ -595,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
         new Chart(document.getElementById('chartTipoAvaria'), { type: 'doughnut', data: { labels: mockData.tipoAvaria.labels, datasets: [{ label: 'Tipo de Avaria', data: mockData.tipoAvaria.data, backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'] }] }, options: {...chartOptions, plugins: { ...chartOptions.plugins, title: { display: true, text: 'Avarias por Tipo' } } } });
         new Chart(document.getElementById('chartLocalDesvios'), { type: 'bar', data: { labels: mockData.localDesvios.labels, datasets: [{ label: 'Local dos Desvios', data: mockData.localDesvios.data, backgroundColor: '#36A2EB' }] }, options: {...chartOptions, plugins: { ...chartOptions.plugins, title: { display: true, text: 'Desvios por Local' } } } });
         new Chart(document.getElementById('chartAcao'), { type: 'pie', data: { labels: mockData.acao.labels, datasets: [{ label: 'Ação Tomada', data: mockData.acao.data, backgroundColor: ['#4BC0C0', '#FF9F40', '#9966FF'] }] }, options: {...chartOptions, plugins: { ...chartOptions.plugins, title: { display: true, text: 'Ações Realizadas' } } } });
-        new Chart(document.getElementById('chartTurno'), { type: 'bar', data: { labels: mockData.turno.labels, datasets: [{ label: 'Registros por Turno', data: mockData.turno.data, backgroundColor: '#FF6384' }] }, options: {...chartOptions, indexAxis: 'y', plugins: { ...chartOptions.plugins, title: { display: true, text: 'Registros por Turno' } } } });
+        new Chart(document.getElementById('chartTurno'), { type: 'bar', data: { labels: mockData.turno.labels, datasets: [{ label: 'Registros por Turno', data: mockData.turno.data, backgroundColor: '#FF6384' }] }, options: {...chartOptions, indexAxis: 'y', plugins: { ...chartOptions.plugins, title: { display: true, text: 'Registos por Turno' } } } });
         new Chart(document.getElementById('chartAnaliseRecebimento'), { type: 'bar', data: { labels: mockData.analiseRecebimento.labels, datasets: [{ label: 'Análise de Recebimento', data: mockData.analiseRecebimento.data, backgroundColor: '#FF9F40' }] }, options: {...chartOptions, plugins: { ...chartOptions.plugins, title: { display: true, text: 'Análise de Recebimento' } } } });
         new Chart(document.getElementById('chartJustificativa'), { type: 'pie', data: { labels: mockData.justificativa.labels, datasets: [{ label: 'Justificativa', data: mockData.justificativa.data, backgroundColor: ['#9966FF', '#FF6384', '#36A2EB'] }] }, options: {...chartOptions, plugins: { ...chartOptions.plugins, title: { display: true, text: 'Justificativas' } } } });
     }
@@ -605,4 +461,3 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
